@@ -3,6 +3,7 @@ class TomosiaIcon8Crawl
 	require 'nokogiri'
 	require 'open-uri'
 	require 'pry'
+	require 'image_size'
 	require 'roo'
 
 	def crawl(key, path, max)
@@ -36,6 +37,11 @@ class TomosiaIcon8Crawl
 					des = path. + "/" + i.to_s + "-" + title + ".png"
 					p des
 
+					# image_size = ImageSize.path(des)
+					# p image_size.size
+
+					# 
+
 					ext = File.extname(image)
 					p ext
 					img_name = File.basename(image, ext)
@@ -44,7 +50,29 @@ class TomosiaIcon8Crawl
 					File.open(des, 'wb') do |file|
 						file.write open(image).read
 					end
-				rescue
+
+					# File.open(des, 'w+') do |img|
+					# 	ims = ImageSize.new(img)
+					# 	p ims.size
+					# end
+					size = File.size(des)
+					p size
+
+					workbook = Roo::Spreadsheet.open './log.xlsx'
+					worksheets = workbook.sheets
+					puts "Found #{worksheets.count} worksheets"
+
+					worksheets.each do |worksheet|
+					  	puts "Reading: #{worksheet}"
+					  	num_rows = 0
+					  	workbook.sheet(worksheet).each_row_streaming do |row|
+					    row_cells = row.map { |cell| cell.value }
+					    num_rows += 1
+					  end
+					  puts "Read #{num_rows} rows" 
+					end
+				rescue Exception => e
+					p e
 					break
 				end
 			end
