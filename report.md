@@ -1,0 +1,13 @@
+-Hôm nay: 28/07/2020:
+	- Cài ruby.
+	- Tìm hiểu cấu trúc html của trang icon8
+	- Đọc document create gem của ruby
+	*Các bước tạo gem:
+		- tạo cấu trúc gem
+		- tạo file Gem Specification: ten_gem.gemspec
+		- tạo file ten_gem.rb trong thư mục lib
+		- code.
+		- gen ra gem file:  gem build ten_gem.gemspec
+	- Code em test: file demo.rb nhưng hơi lỗi, hihi...
+-Ngày mai: 29-08-2020:
+	- Tiếp tục tìm hiểu và thực hiện project
