@@ -1,4 +1,4 @@
-# module TomosiaIcon8Crawl
+module TomosiaIcon8Crawl
 	require 'open-uri'
 	require "HTTParty"
 	require 'pry'
@@ -114,5 +114,4 @@
 	    end
 
     end
-# end
-CrawlIcon8.new("coronavirus", "../img", 1000).crawl
+end
