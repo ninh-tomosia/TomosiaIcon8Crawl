@@ -1,6 +1,6 @@
 # module TomosiaIcon8Crawl
-	require 'nokogiri'
 	require 'open-uri'
+	require "HTTParty"
 	require 'pry'
 	require 'WriteExcel'
     class CrawlIcon8
@@ -12,12 +12,18 @@
     	end
 
     	def html
-    		url = "https://icons8.com/icons/"
-    		if @key != nil
-				url += "set/" + @key
-			end
-			doc = Nokogiri::HTML(URI.open(url))
-			@icons = doc.css('.icon')
+    		if @key == nil
+    			p "No data!"
+    		else 
+    			if @max == nil
+    				url = "https://search.icons8.com/api/iconsets/v5/search?term=#{@key}"
+    			else
+    				url = "https://search.icons8.com/api/iconsets/v5/search?term=#{@key}&amount=#{@max}"
+    			end
+    		end
+    		
+			page_data = HTTParty.get(url)
+			@responses = page_data.parsed_response	
     	end
 
     	def save_file_txt(index, name, url, size, extension)   
@@ -72,60 +78,41 @@
     	end
 
         def crawl
-        	data = []
-        	html
-            i = 0
-			for i in 0..(@icons.to_a.length - 1)
-				unless i >= @max
-					begin
-						# Title image
-						title = @icons.css('.text').to_a[i]
-						# p i.to_s + " " + title
+        	begin
+	        	data = []
+	        	html
+				@responses['icons'].each_with_index do |item, index| 
+					title = item['commonName']
+					des = @path. + "/" + index.to_s + "-" + title + ".png"
 
-						# src image
-						image = @icons.css('img').to_a[i].to_h['src']
-						# p image
+					src = "https://img.icons8.com/#{item['platform']}/2x/#{item['commonName']}.png"
+					# Extension image
+					ext = File.extname(src)
 
-						# Path download image
-						des = @path. + "/" + i.to_s + "-" + title + ".png"
-						# p des
+					# Name image
+					img_name = File.basename(src, ext)
 
-						# Extension image
-						ext = File.extname(image)
-						# p ext
-
-						# Name image
-						img_name = File.basename(image, ext)
-						p img_name
-
-						# download image
-						File.open(des, 'w+') do |file|
-							file.write open(image).read
-						end
-
-						# Size image
-						size_n = File.size(des)
-						size = size_n.to_s + 'Kb'
-						p size
-
-						row = {"index" => i, "name" => img_name, "url" => image, "size" => size, "extension" => ext}
-						data.push(row)
-
-						# p data
-						# Save file
-						# save_file_txt(i, img_name, image, size , ext)
-						# save_file_excel(data)
-
-					rescue Exception => e
-						p "--Runtime error--"
-						p e
-						break
+					# download image
+					File.open(des, 'wb') do |file|
+						file.write open(src).read
 					end
+
+					# Size image
+					size_n = File.size(des)
+					size = size_n.to_s + 'Kb'
+
+					# push data
+					row = {"index" => index, "name" => img_name, "url" => src, "size" => size, "extension" => ext}
+					data.push(row)
 				end
-	        end
-	        save_file_excel(data)
+				p data
+		        save_file_excel(data)
+	    	rescue Exception => e
+	    		p "--Runtime error--"
+	    		p e
+	    	end
 	    end
 
     end
 # end
-CrawlIcon8.new("corona", "../img", 10).crawl
+CrawlIcon8.new("coronavirus", "../img", 1000).crawl
