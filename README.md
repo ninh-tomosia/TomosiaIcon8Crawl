@@ -9,9 +9,9 @@
     gem 'tomosia_icopn8_crawl'
     and
     bundle install
-    #### Use:
+   #### Use:
       TomosiaIcon8Crawl::CrawlIcon8.crawl(keyword, path, max)
-    #### Help:
+   #### Help:
       - keyword is the word used for searching.
         ex: corona, car, virus,...
       - path is the path of the directory where the image was downloaded.
