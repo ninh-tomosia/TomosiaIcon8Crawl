@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
     s.name = %q{tomosia_icon8_crawl}
-    s.version = "0.0.1"
+    s.version = "0.0.2"
     s.date = %q{2020-08-03}
     s.summary = %q{tomosia_icon8_crawl demo viblo}
     s.files = [
