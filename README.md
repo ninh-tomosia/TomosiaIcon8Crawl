@@ -1,10 +1,10 @@
 ## TomosiaIcon8Crawl
-### Gem install
+### Gem install:
     gem install tomosia_icon8_crawl
 
 ### Using:
+   #### Require:
     require 'tomosia_icon8_crawl'
-    or 
    #### Gemfile:
     gem 'tomosia_icopn8_crawl'
     and
