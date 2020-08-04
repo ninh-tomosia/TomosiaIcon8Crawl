@@ -5,7 +5,7 @@
 ### Using:
     require 'tomosia_icon8_crawl'
     or 
-    #### Gemfile:
+   #### Gemfile:
     gem 'tomosia_icopn8_crawl'
     and
     bundle install
